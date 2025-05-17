@@ -23,11 +23,13 @@ def smooth_l1(x, sigma=1.0):
     Return:
         np.array: 计算得到的 Smooth L1 损失数组，形状与输入相同。
     """
-    # 请在此处编写代码
-    # 提示：
-    # 1. 计算 sigma 的平方 sigma2。
-    # 2. 找到满足条件 |x| < 1 / sigma2 的元素索引 (可以使用 np.abs 和比较运算符)。
-    # 3. 对满足条件的元素应用第一个公式 (0.5 * (sigma * x)**2)。
-    # 4. 对不满足条件的元素应用第二个公式 (|x| - 0.5 / sigma2)。
-    # 5. 可以使用 np.where() 来根据条件选择应用哪个公式。
-    pass 
+    sigma2 = sigma ** 2
+    abs_x = np.abs(x)
+    condition = abs_x < 1.0 / sigma2
+    
+    # 计算两部分损失
+    quadratic = 0.5 * sigma2 * x ** 2
+    linear = abs_x - 0.5 / sigma2
+    
+    # 根据条件选择损失值
+    return np.where(condition, quadratic, linear)

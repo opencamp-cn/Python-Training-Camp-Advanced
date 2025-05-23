@@ -1,35 +1,20 @@
-# exercises/maxpool.py
-"""
-练习：最大池化 (Max Pooling)
-
-描述：
-实现一个简单的二维最大池化操作。
-
-请补全下面的函数 `maxpool`。
-"""
 import numpy as np
+def maxpool(input_map, kernel_size, stride):
+    input_h, input_w = input_map.shape
+    pool_h, pool_w = kernel_size, kernel_size
+    stride_h, stride_w = stride, stride
 
-def maxpool(x, kernel_size, stride):
-    """
-    执行二维最大池化操作。
+    output_h = (input_h - pool_h) // stride_h + 1
+    output_w = (input_w - pool_w) // stride_w + 1
 
-    Args:
-        x (np.array): 输入二维数组，形状 (H, W)。
-        kernel_size (int): 池化窗口的大小 (假设为正方形 k x k)。
-        stride (int): 池化窗口移动的步幅。
+    output_map = np.zeros((output_h, output_w))
 
-    Return:
-        np.array: 最大池化结果，形状 (out_H, out_W)。
-                  out_H = (H - kernel_size) // stride + 1
-                  out_W = (W - kernel_size) // stride + 1
-    """
-    # 请在此处编写代码
-    # 提示：
-    # 1. 计算输出的高度和宽度。
-    # 2. 初始化输出数组。
-    # 3. 使用嵌套循环遍历输出数组的每个位置 (i, j)。
-    # 4. 计算当前池化窗口在输入数组 x 中的起始位置 (h_start, w_start)。
-    # 5. 提取当前池化窗口 window = x[h_start:h_start+kernel_size, w_start:w_start+kernel_size]。
-    # 6. 找到窗口中的最大值 np.max(window)。
-    # 7. 将最大值存入输出数组 out[i, j]。
-    pass 
+    for i in range(output_h):
+        for j in range(output_w):
+            start_row = i * stride_h
+            start_col = j * stride_w
+            window = input_map[start_row:start_row+pool_h, start_col:start_col+pool_w]
+            max_val = np.max(window)
+            output_map[i, j] = max_val
+
+    return output_map

@@ -23,13 +23,27 @@ def maxpool(x, kernel_size, stride):
                   out_H = (H - kernel_size) // stride + 1
                   out_W = (W - kernel_size) // stride + 1
     """
-    # 请在此处编写代码
-    # 提示：
-    # 1. 计算输出的高度和宽度。
-    # 2. 初始化输出数组。
-    # 3. 使用嵌套循环遍历输出数组的每个位置 (i, j)。
-    # 4. 计算当前池化窗口在输入数组 x 中的起始位置 (h_start, w_start)。
-    # 5. 提取当前池化窗口 window = x[h_start:h_start+kernel_size, w_start:w_start+kernel_size]。
-    # 6. 找到窗口中的最大值 np.max(window)。
-    # 7. 将最大值存入输出数组 out[i, j]。
-    pass 
+    # 获取输入尺寸
+    H, W = x.shape
+    
+    # 计算输出尺寸
+    out_H = (H - kernel_size) // stride + 1
+    out_W = (W - kernel_size) // stride + 1
+    
+    # 初始化输出数组
+    out = np.zeros((out_H, out_W))
+    
+    # 遍历输出数组的每个位置
+    for i in range(out_H):
+        for j in range(out_W):
+            # 计算当前窗口在输入中的起始位置
+            h_start = i * stride
+            w_start = j * stride
+            
+            # 提取当前窗口
+            window = x[h_start:h_start+kernel_size, w_start:w_start+kernel_size]
+            
+            # 计算窗口中的最大值并存入输出
+            out[i, j] = np.max(window)
+    
+    return out

@@ -31,4 +31,43 @@ def conv2d(x, kernel):
     # 5. 提取输入 x 中与当前卷积核对应的区域 (patch)。
     # 6. 计算 patch 和 kernel 的元素乘积之和 (np.sum(patch * kernel))。
     # 7. 将结果存入输出数组 out[i, j]。
-    pass 
+    # 获取输入和卷积核的形状
+    H,W=x.shape
+    kH,kW=kernel.shape
+    # print('H,W:',H,' ',W)
+    # print('kH,kW:',kH,' ',kW)
+    out_H=H-kH+1
+    out_W=W-kW+1
+    out = np.zeros((out_H,out_W))
+    for i in range(out_H):
+        for j in range(out_W):
+            patch=x[i:i+kH,j:j+kW]
+            out[i,j]=np.sum(patch*kernel)
+    return out
+
+if __name__=='__main__':
+    img1 = np.zeros((5,5))
+    kernel1 = np.random.rand(3,3)
+    result1 = conv2d(img1, kernel1)
+
+    img2 = np.eye(5)
+    kernel2 = np.array([[1,0,0],
+                       [0,1,0],
+                       [0,0,1]])
+    result2 = conv2d(img2, kernel2)
+    expected2 = np.array([[3.,0.,0.],
+                         [0.,3.,0.],
+                         [0.,0.,3.]])
+
+    img3 = np.arange(25).reshape(5,5)
+    kernel3 = np.ones((3,3))
+    result3 = conv2d(img3, kernel3)
+    expected3 = np.array([
+        [ 54,  63,  72],
+        [ 99, 108, 117],
+        [144, 153, 162]
+    ])
+
+    print(result1)
+    print(result2)
+    print(result3)

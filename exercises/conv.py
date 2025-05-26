@@ -35,6 +35,7 @@ def conv2d(x, kernel):
     H,W=x.shape
     kH,kW=kernel.shape
     # print('H,W:',H,' ',W)
+    # print('H,W:',H,' ',W)
     # print('kH,kW:',kH,' ',kW)
     out_H=H-kH+1
     out_W=W-kW+1

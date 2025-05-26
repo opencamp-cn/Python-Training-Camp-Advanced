@@ -9,6 +9,9 @@
 """
 import numpy as np
 
+def one_hot_encode(indices, categories: int):
+    return np.eye(categories)[indices]
+
 def cross_entropy_loss(y_true, y_pred):
     """
     计算交叉熵损失。
@@ -33,4 +36,10 @@ def cross_entropy_loss(y_true, y_pred):
     # 4. 计算交叉熵损失：L = - sum(y_true * log(y_pred))。
     #    在 NumPy 中是 -np.sum(y_true * np.log(y_pred))。
     # 5. 计算所有样本的平均损失：L / N。
-    pass 
+    _, c = y_pred.shape
+    if len(y_true.shape) != 2:
+        y_true = one_hot_encode(y_true, c)
+    n, c = y_pred.shape
+    y_pred = np.clip(y_pred, 1e-12, 1.0)
+    loss = -np.sum(y_true * np.log(y_pred))
+    return loss/n
